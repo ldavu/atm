@@ -1,7 +1,21 @@
+from os import write
+from tqdm import tqdm
+from time import sleep
+'''
+def carregando():
+    pass
+    print("Carregando.")
+    for i in range('.', -1, -1):
+        print(f"{i} ", end="", flush=True)
+        sleep(0.5)
+'''
+carregando()
+
 print("Bem-Vindo ao Caixa eletrónico online!")
 restart = 'y'
-saldo = 1500
 chances = 3
+saldo = 2500
+arq = open("banco_saldo", 'a')
 while chances >= 0:
     senha = int(input("Digite sua senha de 4 dígitos: "))
     if senha == (1234):
@@ -22,11 +36,22 @@ while chances >= 0:
             if retirar == 1:
                 print("Quanto deseja retirar?")
                 retirar = float(input())
-                saldo_atual = saldo - retirar
-                print(f"Seu saldo atual é de: {saldo_atual}")
-                continuar = str(input("Deseja continuar?"))
-                if continuar in ('n','N','não','nao'):
-                    break
+                if retirar > saldo:
+                    print("você está retirando um valor acima do seu saldo!")
+                    arq.writelines(f"Erro: Cliente tentou retirar o valor de: {retirar}, acima do saldo na conta que é de: {saldo}\n")
+                    arq.close()
+                else:
+                    saldo_atual = saldo - retirar
+                    sleep(1)
+                    for i in tqdm(range(5)):
+                        sleep(0.5)
+                    arq.writelines(f"{saldo_atual}\n")
+                    print("Você retirou com sucesso!")
+                    print(f"Seu saldo atual é de: {saldo_atual}")
+                    continuar = str(input("Deseja continuar?"))
+                    arq.close()
+                    if continuar in ('n','N','não','nao'):
+                        break
             if retirar in [10, 20, 50, 100]:
                 retirar_atual = saldo - retirar
                 print(f"Seu saldo é de: {retirar_atual}")
@@ -35,8 +60,6 @@ while chances >= 0:
                     break
             elif retirar in [10,20,50,100]:
                 print('Informe um valor válido!')
-
-            
         elif opcao == 3:
             print("Qual o valor que deseja depositar?")
             depositar_valor = float(input(""))
@@ -44,8 +67,6 @@ while chances >= 0:
             print(f"Seu saldo é de: {depositar_valor_saldo}")
         elif opcao == 4:
             pass
-
-    
     elif chances <= 0:
         print("Suas tentativas acabaram")
     else:
