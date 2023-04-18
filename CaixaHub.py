@@ -86,4 +86,4 @@ while chances >= 0:
         chances -= 1
         
 
-#Codificação Davu macuxi#0001
+#Codificação Davu 
